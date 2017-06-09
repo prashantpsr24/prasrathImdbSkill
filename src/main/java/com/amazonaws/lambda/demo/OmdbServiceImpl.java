@@ -21,7 +21,7 @@ public class OmdbServiceImpl implements OMDBService {
         try {
             movieName = URLEncoder.encode(movieName, "UTF-8");
             String address = "https://www.omdbapi.com/?t=" + movieName
-                    + "&apikey=ae6969ba";
+                    + "&apikey=289ba303";
 
             URL url = new URL(address);
             con = (HttpURLConnection) url.openConnection();
