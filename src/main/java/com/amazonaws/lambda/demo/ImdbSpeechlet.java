@@ -1,11 +1,5 @@
 package com.amazonaws.lambda.demo;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,12 +29,17 @@ public class ImdbSpeechlet implements Speechlet {
     @Override
     public SpeechletResponse onIntent(IntentRequest request, Session arg1)
             throws SpeechletException {
-
         Intent intent = request.getIntent();
-        // Only 1 intent
-        String targetMovie = intent.getSlot("Movie").getValue();
-        return getImdbRating(targetMovie);
-
+        String intentName = intent.getName();
+        switch (intentName) {
+        case "psrImdb":
+            String targetMovie = intent.getSlot("Movie").getValue();
+            return getImdbRating(targetMovie);
+        case "AMAZON.HelpIntent":
+            return getLaunchResponse();
+        default:
+            return fallback();
+        }
     }
 
     @Override
@@ -51,18 +50,18 @@ public class ImdbSpeechlet implements Speechlet {
     @Override
     public void onSessionEnded(SessionEndedRequest arg0, Session arg1)
             throws SpeechletException {
-        System.out.println("Session Ended");
+        log.debug("Session Ended");
     }
 
     @Override
     public void onSessionStarted(SessionStartedRequest arg0, Session arg1)
             throws SpeechletException {
         // To create dialogues. Lambda lifetime can be a problem for long conversations.
-        System.out.println("Session Started");
+        log.debug("Session Started");
     }
 
     private SpeechletResponse getImdbRating(String movieName) {
-        SpeechletResponse response = null;
+        SpeechletResponse response;
         try {
             JSONObject json = omdbService.callOmdbApi(movieName);
             String rating = json.getString("imdbRating");

@@ -10,13 +10,10 @@ public class LambdaFunctionHandler extends SpeechletRequestStreamHandler {
 
     public LambdaFunctionHandler() {
         super(new ImdbSpeechlet(new OmdbServiceImpl()), supportedApplicationIds);
-        System.out.print("Initialized the Thing");
-        // TODO Auto-generated constructor stub
     }
 
-    // Only for test purpose
+    // Only for test purpose. Missing DI
     public LambdaFunctionHandler(OMDBService omdbService) {
         super(new ImdbSpeechlet(omdbService), supportedApplicationIds);
-        // TODO Auto-generated constructor stub
     }
 }

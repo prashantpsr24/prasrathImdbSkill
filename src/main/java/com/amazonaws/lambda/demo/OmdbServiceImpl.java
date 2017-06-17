@@ -14,6 +14,11 @@ import org.slf4j.LoggerFactory;
 public class OmdbServiceImpl implements OMDBService {
     private static final Logger log = LoggerFactory.getLogger(ImdbSpeechlet.class);
 
+    /**
+     * This implementation is highly unsafe. Only for demo purpose.
+     * @param movieName name of the movie
+     * @return
+     */
     public JSONObject callOmdbApi(String movieName) {
         JSONObject json;
         HttpURLConnection con = null;
@@ -29,7 +34,6 @@ public class OmdbServiceImpl implements OMDBService {
             String encoding = con.getContentEncoding();
             encoding = encoding == null ? "UTF-8" : encoding;
             String body = IOUtils.toString(in, encoding);
-            System.out.println(body);
             json = new JSONObject(body);
         }
         catch (Exception e) {
